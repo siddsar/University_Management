@@ -104,6 +104,7 @@ CREATE TABLE Course_registration (
 	Grade	VARCHAR(1) NOT NULL,
 	Sem	TINYINT NOT NULL,
 	Year	SMALLINT NOT NULL,
+	Type_Taken TEXT NOT NULL,
 	FOREIGN KEY(Course_code) REFERENCES Course(Course_code),
 	FOREIGN KEY(Roll_no) REFERENCES Student(Roll_no),
 	FOREIGN KEY(Prof_id) REFERENCES Professor(Prof_id),
@@ -127,6 +128,20 @@ CREATE TABLE Mentoring(
 	FOREIGN KEY(Prof_id) REFERENCES Professor(Prof_id),
 	PRIMARY KEY(Prof_id,Roll_no,Course_code)
 )
+DELIMITER $$
+CREATE TRIGGER mytrigga AFTER UPDATE
+ON Course_request
+FOR EACH ROW
+BEGIN
+	IF NEW.Status = 'Approved' THEN
+		INSERT INTO Course_registration
+		SET Course_code = NEW.Course_code , Prof_Id = NEW.Prof_Id, Roll_no = NEW.Roll_no, Grade = 'O', Sem = NEW.Sem, Year = NEW.Year, Type_taken = NEW.Type_taken;
+	END IF;
+END$$
+DELIMITER;
+
+
+
 
 -- SET FOREIGN_KEY_CHECKS=0;
 

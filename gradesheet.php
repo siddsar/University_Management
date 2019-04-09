@@ -73,6 +73,11 @@ sec_session_start();
                         echo "<div class = 'well-sm'><h4> SPI : ". $spi . "</h4></div>";
                         
                     }
+                    else
+                    {
+                        $cpi = $weighted_sum / $total_credits;
+                        echo "<div class = 'well-sm'><h4> CPI : ". $cpi . "</h4></div>";
+                    }
                     echo "</div>";
                     $weighted_sem_credits = 0;
                     $sem_credits = 0;
@@ -131,7 +136,7 @@ sec_session_start();
                 echo "<tr class = 'row100 body'><td class = 'cell100 column1'> ".$ccode." </td> <td class = 'cell100 column2'>".$cname." </td> <td  class = 'cell100 column3'> ".$credits."</td> <td class = 'cell100 column4'>".$grade." </td> </tr> ";
                
         }
-        $cpi = $weighted_sum / $total_credits;
+        
         
     }
     else
@@ -144,7 +149,7 @@ sec_session_start();
     
     </div>
     </div>
-    <div>
+    
     
 
 
