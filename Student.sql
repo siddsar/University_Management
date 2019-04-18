@@ -8,7 +8,8 @@ USE ums_db;
 CREATE TABLE Ongoing (
 	Sem TINYINT NOT NULL,
 	Year SMALLINT NOT NULL,
-	PRIMARY KEY(Sem,Year)
+	Today DATE NOT NULL,
+	PRIMARY KEY(Today)
 );
 CREATE TABLE Student (
 	Roll_no	INTEGER NOT NULL,
@@ -17,12 +18,19 @@ CREATE TABLE Student (
 	DOB	DATE NOT NULL,
 	DOA	DATE NOT NULL,
 	CPI	NUMERIC,
+	Contact TEXT,
 	PRIMARY KEY(Roll_no)
 );
+
+CREATE TABLE Department (
+	Dept_code VARCHAR(4) NOT NULL,
+	Dept_name TEXT NOT NULL,
+	PRIMARY KEY(Dept_code)
+);
+
 CREATE TABLE Program (
 	Program_id	INTEGER NOT NULL,
 	Dept_code VARCHAR(4) NOT NULL,
-	Dept_name TEXT NOT NULL,
 	Program	TEXT NOT NULL,
 	OE_credits	SMALLINT NOT NULL,
 	DE_credits	SMALLINT NOT NULL,
@@ -30,7 +38,8 @@ CREATE TABLE Program (
 	IC_credits	SMALLINT NOT NULL,
 	SO_credits	SMALLINT NOT NULL,
 	ESO_credits	SMALLINT NOT NULL,
-	PRIMARY KEY(Program_id)
+	PRIMARY KEY(Program_id),
+	FOREIGN KEY(Dept_code) REFERENCES Department(Dept_code)
 );
 CREATE TABLE Course (
 	Course_code	VARCHAR(7) NOT NULL,
@@ -45,6 +54,7 @@ CREATE TABLE Professor(
 	DOB	DATE NOT NULL,
 	DOJ	DATE NOT NULL,
 	Dept_code	VARCHAR(4) NOT NULL,
+	Room Text,
 	PRIMARY KEY(Prof_id)
 );
 CREATE TABLE Prof_Designation(
@@ -127,9 +137,139 @@ CREATE TABLE Mentoring(
 	FOREIGN KEY(Course_code) REFERENCES Course(Course_code),
 	FOREIGN KEY(Prof_id) REFERENCES Professor(Prof_id),
 	PRIMARY KEY(Prof_id,Roll_no,Course_code)
-)
+);
+
+
+CREATE TABLE Doctor (
+	D_id	INTEGER NOT NULL,
+	Name	TEXT NOT NULL,
+	Degree	TEXT NOT NULL,
+	Specialisation	TEXT NOT NULL,
+	Email	TEXT NOT NULL,
+	Contact	BIGINT NOT NULL,
+	PRIMARY KEY(D_id)
+);
+
+CREATE TABLE Doctor_availability (
+	D_id	INTEGER NOT NULL,
+	Monday	INTEGER NOT NULL, 
+	Tuesday	INTEGER NOT NULL, 
+	Wednesday	INTEGER NOT NULL, 
+	Thursday	INTEGER NOT NULL, 
+	Friday	INTEGER NOT NULL, 
+	Saturday	INTEGER NOT NULL, 
+	Sunday	INTEGER NOT NULL, 
+    FOREIGN KEY(D_id) REFERENCES Doctor(D_id),
+    PRIMARY KEY(D_id)
+);
+
+CREATE TABLE Bookings (
+	Room VARCHAR(5) NOT NULL,
+	Area VARCHAR(5) NOT NULL,
+	Start_time DATETIME NOT NULL,
+	End_time DATETIME NOT NULL,
+	PRIMARY KEY(Room,Area,Start_time)
+);
+
+CREATE TABLE Treatment (
+	Patient_type	TEXT,
+	Patient_id	INTEGER NOT NULL,
+	Relationship	TEXT,
+	D_id	INTEGER NOT NULL,
+	Consulting_date	DATE NOT NULL,
+	FOREIGN KEY(D_id) REFERENCES Doctor(D_id) 
+);
+
+CREATE TABLE Patient_appointment (
+	Patient_type	TEXT NOT NULL,
+	Patient_id	INTEGER NOT NULL, 
+	D_id	INTEGER NOT NULL,
+	Appointment_no	SMALLINT NOT NULL,
+	Appointment_datetime	DATETIME NOT NULL,
+    FOREIGN KEY(D_id) REFERENCES Doctor(D_id),
+    PRIMARY KEY(Patient_id,Appointment_datetime)
+);
+
+CREATE TABLE Library (
+	Acc_no	INTEGER NOT NULL,
+	Book_no	INTEGER NOT NULL,
+	Author	TEXT NOT NULL,
+	Tot_copies	SMALLINT NOT NULL,
+	PRIMARY KEY(Book_no)
+);
+
+CREATE TABLE Book_issued (
+	Book_no	INTEGER NOT NULL,
+	Roll_no	INTEGER NOT NULL, 
+	Date_issued	DATE NOT NULL,
+	Date_due	DATE NOT NULL,
+	Date_return	DATE,
+	FOREIGN KEY(Book_no) REFERENCES Library(Book_no),
+	FOREIGN KEY(Roll_no) REFERENCES Student(Roll_no),
+    PRIMARY KEY(Book_no)
+);
+
+CREATE TABLE Student_hall (
+	Roll_no	INTEGER NOT NULL,
+	Hall	INTEGER NOT NULL,
+	Room_no	TEXT NOT NULL,
+	FOREIGN KEY(Roll_no) REFERENCES Student(Roll_no),
+    PRIMARY KEY(Roll_no)
+);
+
+CREATE TABLE Dues (
+	Roll_no	INTEGER NOT NULL,
+	Mess_dues	INTEGER NOT NULL,
+	Electricity_dues	INTEGER NOT NULL,
+	Library_dues	INTEGER NOT NULL,
+	FOREIGN KEY(Roll_no) REFERENCES Student(Roll_no),
+    PRIMARY KEY(Roll_no)
+);
+
+CREATE TABLE Staff (
+	Staff_id	INTEGER NOT NULL,
+	Work_location	TEXT NOT NULL,
+	Name	TEXT NOT NULL,
+	Work_description	TEXT,
+    PRIMARY KEY(Staff_id)
+);
+
+CREATE TABLE Student_governance_body (
+	Body_id	INTEGER NOT NULL,
+	Body	TEXT NOT NULL,
+	Fund_allocated	INTEGER NOT NULL,
+	PRIMARY KEY(Body_id)
+);
+
+CREATE TABLE Body_secretary (
+	Body_id	INTEGER NOT NULL,
+	Secretary_name	TEXT NOT NULL,
+    FOREIGN KEY(Body_id) REFERENCES Student_governance_body(Body_id),
+    PRIMARY KEY(Body_id)
+
+);
+
+CREATE TABLE Body_members (
+	Body_id	INTEGER NOT NULL,
+	Coordinator	INTEGER NOT NULL,
+    FOREIGN KEY(Body_id) REFERENCES Student_governance_body(Body_id),
+	FOREIGN KEY(Coordinator) REFERENCES Student(Roll_no),
+	PRIMARY KEY(Body_id,Coordinator)
+);
+
+CREATE TABLE Attendance_salary (
+	Emp_type	TEXT NOT NULL,
+	Id	INTEGER NOT NULL,
+	Month_attendance	TEXT NOT NULL,
+	Salary	BIGINT NOT NULL
+);
+
+
+
+
+
 DELIMITER $$
-CREATE TRIGGER mytrigga AFTER UPDATE
+CREATE TRIGGER course_status_change AFTER UPDATE
 ON Course_request
 FOR EACH ROW
 BEGIN
@@ -140,6 +280,16 @@ BEGIN
 END$$
 DELIMITER;
 
+DELIMITER #@
+CREATE TRIGGER CPI AFTER UPDATE
+ON Course_registration
+FOR EACH ROW
+BEGIN
+	IF NEW.Grade <> 'O' THEN
+		UPDATE INTO Student
+		SET 
+END#@
+DELIMITER;
 
 
 
