@@ -178,6 +178,7 @@ CREATE TABLE Doctor_availability (
 );
 
 CREATE TABLE Bookings (
+	Booked_by TEXT NOT NULL,
 	Room VARCHAR(5) NOT NULL,
 	Area VARCHAR(5) NOT NULL,
 	Start_time DATETIME NOT NULL,
@@ -285,7 +286,7 @@ FOR EACH ROW
 BEGIN
 	IF NEW.Status = 'Accepted' THEN
 		INSERT INTO Course_registration
-		SET Course_code = NEW.Course_code , Prof_Id = NEW.Prof_Id, Roll_no = NEW.Roll_no, Grade = 'On', Sem = NEW.Sem, Year = NEW.Year, Type_taken = NEW.Type_taken;
+		SET Course_code = NEW.Course_code , Prof_Id = NEW.Prof_Id, Roll_no = NEW.Roll_no, Grade = 'I', Sem = NEW.Sem, Year = NEW.Year, Type_taken = NEW.Type_taken;
 	END IF;
 END;$$
 
@@ -298,7 +299,7 @@ BEGIN
 		SET Student.CPI = (
 			select CAST(sum(Course.Credits*Grade.Grade_point) as DECIMAL)/sum(Course.Credits)
 			from Course_registration, Course, Grade
-			where Course_registration.Course_code=Course.Course_code and Course_registration.Roll_no = NEW.Roll_no and Grade.Grade = Course_registration.Grade and Course_registration.Grade <> 'O'
+			where Course_registration.Course_code=Course.Course_code and Course_registration.Roll_no = NEW.Roll_no and Grade.Grade = Course_registration.Grade and Course_registration.Grade <> 'I'
 		)
 		WHERE Student.Roll_no = NEW.Roll_no;
 	END IF;
@@ -316,15 +317,14 @@ CREATE TRIGGER library_dues AFTER UPDATE
 ON Book_issued
 FOR EACH ROW
 BEGIN
-	IF NEW.Date_return <> NULL THEN
-		UPDATE Dues
-		SET Dues.Library_dues =
-			CASE WHEN NEW.Date_return - NEW.Date_issued > 10 THEN
-			Dues.Library_dues + (NEW.Date_return - NEW.Date_issued)*5
-			ELSE Dues.Library_dues
-			END 
-		WHERE Dues.Roll_no = NEW.Roll_no;
-	END IF;
+	UPDATE Dues
+	SET Dues.Library_dues = (
+	CASE
+		WHEN DATEDIFF(NEW.Date_return, NEW.Date_due) > 0 THEN Dues.Library_dues + DATEDIFF(NEW.Date_return, NEW.Date_due)*5
+		WHEN DATEDIFF(NEW.Date_return, NEW.Date_due) <= 0 THEN Dues.Library_dues
+	END
+	)
+	WHERE Dues.Roll_no = NEW.Roll_no;
 END;$$
 
 DELIMITER ;

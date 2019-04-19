@@ -1,5 +1,4 @@
 
-
 INSERT into Student values(150657,"Uriah Franks","uriahfranks@iitk.ac.in","1996-07-20","2015-07-22",0,"5172799804");
 INSERT into Student values(150512,"Wyatt Oneal","wyattoneal@iitk.ac.in","1996-09-23","2015-07-22",0,"2673183230");
 INSERT into Student values(150320,"Hammett Gutierrez","hammettgutierrez@iitk.ac.in","1996-05-05","2015-07-21",0,"3194596861");
@@ -210,13 +209,15 @@ INSERT into Course_offered values("ME320",1,2019,3001,"DE",b'0010000000000000000
 INSERT into Course_offered values("MSE220",1,2019,3001,"DE",b'00100000000000000000001000000000000000000010000000');
 INSERT into Course_offered values("MTH101",1,2019,4001,"IC",b'00100000000000000000001000000000000000000010000000');
 
-INSERT into Course_request values("ESC101",1,2019,1002,180556,"Accepted","IC");
+INSERT into Course_request values("ESC101",1,2019,1002,180556,"Pending","IC");
 INSERT into Course_request values("CS330",1,2019,1001,170128,"Pending","ESO");
-INSERT into Course_request values("ESC201",1,2019,2001,170396,"Accepted","IC");
+INSERT into Course_request values("ESC201",1,2019,2001,170396,"Pending","IC");
 INSERT into Course_request values("EE320",1,2019,2002,150665,"Pending","DC");
-INSERT into Course_request values("ME320",1,2019,3001,160787,"Rejected","DE");
+INSERT into Course_request values("ME320",1,2019,3001,160787,"Pending","DE");
 INSERT into Course_request values("MSE220",1,2019,3001,160717,"Pending","DE");
 INSERT into Course_request values("MTH101",1,2019,4001,180556,"Pending","IC");
+
+
 
 INSERT into Course_Profs values("ESC101",1002,"Instructor in-Charge");
 INSERT into Course_Profs values("ESC101",1001,"Tutor");
@@ -235,4 +236,15 @@ INSERT into TA values("CS330",1,2019,150320);
 INSERT into Mentoring values(1001,150657,'CS399');
 INSERT into Mentoring values(1002,150512,'CS699');
 INSERT into Mentoring values(1002,150320,'CS799');
+
+INSERT into Ongoing values(1,2019,"2019-04-22");
+
+INSERT into Bookings values("SnT General Secretary","L7","LHC","2019-04-30 19:00:00","2019-04-30 20:00:00");
+
+
+
+
+UPDATE Course_request set status="Accepted" where Course_code="ESC101" and Roll_no=180556;
+
+UPDATE Course_registration set grade="A" where Course_code="ESC101" and Roll_no=180556;
 
