@@ -1,5 +1,6 @@
 <?php
 include_once 'includes/db_connect.php';
+// include_once 'includes/db_connect_ums.php';
 include_once 'includes/functions.php';
 
 sec_session_start();
@@ -42,12 +43,13 @@ sec_session_start();
 		var con = mysql.createConnection({
   			host: "localhost",
 			user: "root",
-  			password: "10021999",
+  			password: "sidanusar",
 			database: "secure_login"
 		});
+      
 		con.connect(function(err) {
   			if (err) throw err;
-  			con.query("UPDATE Course_request SET address = 'Approved' WHERE Course_code = ".concat(course_code," AND Roll_no = ",roll_no,";"), function (err, result, fields) {
+  			con.query("UPDATE Course_request SET address = 'Approved' WHERE Course_code = '".concat(course_code,"' AND Roll_no = ",roll_no,";"), function (err, result, fields) {
     				if (err) throw err;
     				console.log(result);
   			});
@@ -68,16 +70,15 @@ function reject_c(course_code,roll_no){
 
 <?php 
 
-$user_id = $_SESSION['username'];
-$sql = "SELECT email FROM members WHERE username = '$user_id'";
-$user_id = $mysqli->query($sql) ;
-$row = $user_id->fetch_assoc();
-$row = $row["email"];
-$sql = "SELECT Prof_id FROM Professor WHERE Email_id = '$row'";
-$prof_id = $mysqli->query($sql) ;
-$row = $prof_id->fetch_assoc();
+
+$email = $_SESSION["email"];
+$sql = "SELECT * from Professor where Email_id = '". $email. "';";
+// print($sql);
+$res = $mysqli->query($sql);
+$row = $res->fetch_assoc();
 $row = $row["Prof_id"];
-$sql = "SELECT * FROM Course_request where Prof_id = $row";
+// print($row);
+$sql = "SELECT * FROM Course_request where Prof_id = $row and status = 'Pending'; ";
 $result = $mysqli->query($sql) ;
  
 
@@ -88,12 +89,16 @@ while($row = $result->fetch_assoc()) {
          <table>
 
 		<tr>
-               <td>Requests:</td>
+      <td>Requests:</td>
 		<td><?php echo $row["Roll_no"] ?></td>
+      <script>
+         var cc = <?php echo $row['Course_code']?>;
+         var roll = <?php echo $row['Roll_no']?>;
+      </script>
              
                   <td>
-                  <input type="button" value="Accepted" onclick="accept_c('<?php echo $row["Course_code"] ?>','<?php echo $row["Roll_no"] ?>')">
-<input type="button" value="Rejected" onclick="reject_c(".$row["Course_code"].",".$row["Roll_no"].")">
+                  <input type="button" value="Accepted" onclick="accept_c(cc,roll)">
+                  <input type="button" value="Rejected" onclick="reject_c(cc,roll)">  
                </td>
 
             </tr>

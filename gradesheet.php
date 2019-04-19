@@ -38,7 +38,7 @@ sec_session_start();
 			<div class="wrap-table100">
             <div><h2>Grade Sheet for <?php echo htmlentities($_SESSION['username'])?> </h2></div>
     <?php 
-    if( $stmt = $mysqli->prepare("SELECT Course_registration.Course_code, Course.Course_name, Course.Credits, Course_registration.Grade , Course_registration.Year, Course_registration.Sem FROM Course_registration, Course, Student WHERE Course_registration.Course_code = Course.Course_code AND Student.Roll_no = Course_registration.Roll_no AND Student.Email_id = ? ORDER BY Year, Sem;"))
+    if( $stmt = $mysqli_ums->prepare("SELECT Course_registration.Course_code, Course.Course_name, Course.Credits, Course_registration.Grade , Course_registration.Year, Course_registration.Sem FROM Course_registration, Course, Student WHERE Course_registration.Course_code = Course.Course_code AND Student.Roll_no = Course_registration.Roll_no AND Student.Email_id = ? ORDER BY Year, Sem;"))
     {
         $stmt->bind_param('s', $_SESSION['email']);  // Bind "$email" to parameter.
         $stmt->execute();    // Execute the prepared query.

@@ -1,14 +1,90 @@
 -- BEGIN TRANSACTION;
 
-DROP DATABASE IF EXISTS ums_db;
+-- DROP DATABASE IF EXISTS ums_db;
 
-CREATE DATABASE ums_db;
-USE ums_db;
+-- CREATE DATABASE ums_db;
+
+DROP DATABASE IF EXISTS secure_login;
+
+CREATE DATABASE secure_login;
+
+USE secure_login;
+
+-- phpMyAdmin SQL Dump
+-- version 3.4.10.1deb1
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost
+-- Generation Time: Dec 03, 2013 at 03:03 PM
+-- Server version: 5.5.34
+-- PHP Version: 5.3.10-1ubuntu3.8
+-- https://github.com/peredurabefrog/phpSecureLogin
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+--
+-- Database: `secure_login`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `login_attempts`
+--
+
+CREATE TABLE IF NOT EXISTS `login_attempts` (
+  `user_id` int(11) NOT NULL,
+  `time` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--  
+-- Dumping data for table `login_attempts`
+--
+
+INSERT INTO `login_attempts` (`user_id`, `time`) VALUES
+(1, '1385995353'),
+(1, '1386011064');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `members`
+--
+
+CREATE TABLE IF NOT EXISTS `members` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(30) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `password` char(128) NOT NULL,
+  `salt` char(128) NOT NULL,
+  `question` varchar(200) NOT NULL,
+  `answer` varchar(100) NOT NULL,
+  `role` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `members`
+--
+
+INSERT INTO `members` (`id`, `username`, `email`, `password`, `salt`,`question`,`answer`, `role`) VALUES
+(1, 'test_user', 'test@example.com', '00807432eae173f652f2064bdca1b61b290b52d40e429a7d295d76a71084aa96c0233b82f1feac45529e0726559645acaed6f3ae58a286b9f075916ebf66cacc', 'f9aab579fc1b41ed0c44fe4ecdbfcdb4cb99b9023abb241a6db833288f4eea3c02f76e0d35204a8695077dcf81932aa59006423976224be0390395bae152d4ef','YOYO','HOHO', 'student');
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
 
 CREATE TABLE Ongoing (
 	Sem TINYINT NOT NULL,
 	Year SMALLINT NOT NULL,
-	Today DATE NOT NULL,
+	Today DATETIME NOT NULL,
 	PRIMARY KEY(Today)
 );
 CREATE TABLE Student (
@@ -17,7 +93,7 @@ CREATE TABLE Student (
 	Email_id	TEXT NOT NULL,
 	DOB	DATE NOT NULL,
 	DOA	DATE NOT NULL,
-	CPI	NUMERIC,
+	CPI	DECIMAL,
 	Contact TEXT,
 	PRIMARY KEY(Roll_no)
 );
@@ -38,8 +114,10 @@ CREATE TABLE Program (
 	IC_credits	SMALLINT NOT NULL,
 	SO_credits	SMALLINT NOT NULL,
 	ESO_credits	SMALLINT NOT NULL,
-	PRIMARY KEY(Program_id),
-	FOREIGN KEY(Dept_code) REFERENCES Department(Dept_code)
+	THESIS_credits	SMALLINT NOT NULL,
+	FOREIGN KEY(Dept_code) REFERENCES Department(Dept_code),
+	PRIMARY KEY(Program_id)
+	
 );
 CREATE TABLE Course (
 	Course_code	VARCHAR(7) NOT NULL,
@@ -47,14 +125,20 @@ CREATE TABLE Course (
 	Credits	TINYINT NOT NULL,
 	PRIMARY KEY(Course_code)
 );
+CREATE TABLE Grade (
+	Grade VARCHAR(1) NOT NULL,
+	Grade_point SMALLINT NOT NULL,
+	PRIMARY KEY(Grade)
+);
 CREATE TABLE Professor(
 	Prof_id	INTEGER NOT NULL,
-	Name	TEXT NOT NULL,
-	Email_id	TEXT NOT NULL,
+	Name TEXT NOT NULL,
+	Email_id TEXT NOT NULL,
 	DOB	DATE NOT NULL,
 	DOJ	DATE NOT NULL,
-	Dept_code	VARCHAR(4) NOT NULL,
+	Dept_code VARCHAR(4) NOT NULL,
 	Room Text,
+	FOREIGN KEY(Dept_code) REFERENCES Department(Dept_code),
 	PRIMARY KEY(Prof_id)
 );
 CREATE TABLE Prof_Designation(
@@ -118,6 +202,7 @@ CREATE TABLE Course_registration (
 	FOREIGN KEY(Course_code) REFERENCES Course(Course_code),
 	FOREIGN KEY(Roll_no) REFERENCES Student(Roll_no),
 	FOREIGN KEY(Prof_id) REFERENCES Professor(Prof_id),
+	FOREIGN KEY(Grade) REFERENCES Grade(Grade),
 	PRIMARY KEY(Course_code,Roll_no,Sem,Year)
 );
 CREATE TABLE TA (
@@ -172,11 +257,10 @@ CREATE TABLE Bookings (
 );
 
 CREATE TABLE Treatment (
-	Patient_type	TEXT,
+	Patient_type	TEXT NOT NULL,
 	Patient_id	INTEGER NOT NULL,
 	Relationship	TEXT,
 	D_id	INTEGER NOT NULL,
-	Consulting_date	DATE NOT NULL,
 	FOREIGN KEY(D_id) REFERENCES Doctor(D_id) 
 );
 
@@ -193,8 +277,10 @@ CREATE TABLE Patient_appointment (
 CREATE TABLE Library (
 	Acc_no	INTEGER NOT NULL,
 	Book_no	INTEGER NOT NULL,
+	Book_title TEXT NOT NULL,
 	Author	TEXT NOT NULL,
 	Tot_copies	SMALLINT NOT NULL,
+	Copies_in_lib	SMALLINT NOT NULL,
 	PRIMARY KEY(Book_no)
 );
 
@@ -211,7 +297,7 @@ CREATE TABLE Book_issued (
 
 CREATE TABLE Student_hall (
 	Roll_no	INTEGER NOT NULL,
-	Hall	INTEGER NOT NULL,
+	Hall	TINYINT NOT NULL,
 	Room_no	TEXT NOT NULL,
 	FOREIGN KEY(Roll_no) REFERENCES Student(Roll_no),
     PRIMARY KEY(Roll_no)
@@ -225,36 +311,32 @@ CREATE TABLE Dues (
 	FOREIGN KEY(Roll_no) REFERENCES Student(Roll_no),
     PRIMARY KEY(Roll_no)
 );
-
+CREATE TABLE Work_Locations (
+	Location_ID VARCHAR(6) NOT NULL,
+	Work_location TEXT NOT NULL,
+	PRIMARY KEY(Location_ID)
+);
 CREATE TABLE Staff (
 	Staff_id	INTEGER NOT NULL,
-	Work_location	TEXT NOT NULL,
+	Location_id VARCHAR(6) NOT NULL,
 	Name	TEXT NOT NULL,
-	Work_description	TEXT,
+	Work_description TEXT NOT NULL,
+    FOREIGN KEY(Location_id) REFERENCES Work_Locations(Location_ID),
     PRIMARY KEY(Staff_id)
 );
-
 CREATE TABLE Student_governance_body (
 	Body_id	INTEGER NOT NULL,
-	Body	TEXT NOT NULL,
-	Fund_allocated	INTEGER NOT NULL,
+	Body_name	TEXT NOT NULL,
+	Funds_allocated	INTEGER NOT NULL,
 	PRIMARY KEY(Body_id)
 );
-
-CREATE TABLE Body_secretary (
-	Body_id	INTEGER NOT NULL,
-	Secretary_name	TEXT NOT NULL,
-    FOREIGN KEY(Body_id) REFERENCES Student_governance_body(Body_id),
-    PRIMARY KEY(Body_id)
-
-);
-
 CREATE TABLE Body_members (
 	Body_id	INTEGER NOT NULL,
-	Coordinator	INTEGER NOT NULL,
+	Roll_no	INTEGER NOT NULL,
+	Position TEXT NOT NULL,
     FOREIGN KEY(Body_id) REFERENCES Student_governance_body(Body_id),
-	FOREIGN KEY(Coordinator) REFERENCES Student(Roll_no),
-	PRIMARY KEY(Body_id,Coordinator)
+	FOREIGN KEY(Roll_no) REFERENCES Student(Roll_no),
+	PRIMARY KEY(Body_id,Roll_no)
 );
 
 CREATE TABLE Attendance_salary (
@@ -277,22 +359,48 @@ BEGIN
 		INSERT INTO Course_registration
 		SET Course_code = NEW.Course_code , Prof_Id = NEW.Prof_Id, Roll_no = NEW.Roll_no, Grade = 'O', Sem = NEW.Sem, Year = NEW.Year, Type_taken = NEW.Type_taken;
 	END IF;
-END$$
-DELIMITER;
+END;$$
 
-DELIMITER #@
 CREATE TRIGGER CPI AFTER UPDATE
 ON Course_registration
 FOR EACH ROW
 BEGIN
 	IF NEW.Grade <> 'O' THEN
-		UPDATE INTO Student
-		SET 
-END#@
-DELIMITER;
+		UPDATE Student
+		SET Student.CPI = (
+			select CAST(sum(Course.Credits*Grade.Grade_point) as DECIMAL)/sum(Course.Credits)
+			from Course_registration, Course, Grade
+			where Course_registration.Course_code=Course.Course_code and Course_registration.Roll_no = NEW.Roll_no and Grade.Grade = Course_registration.Grade and Course_registration.Grade <> 'O'
+		)
+		WHERE Student.Roll_no = NEW.Roll_no;
+	END IF;
+END;$$
 
+CREATE TRIGGER old_bookings AFTER UPDATE
+ON Ongoing
+FOR EACH ROW
+BEGIN
+DELETE FROM Bookings
+WHERE Bookings.End_time < NEW.Today;
+END;$$
 
+CREATE TRIGGER library_dues AFTER UPDATE
+ON Book_issued
+FOR EACH ROW
+BEGIN
+	IF NEW.Date_return <> NULL THEN
+		UPDATE Dues
+		SET Dues.Library_dues =
+			CASE WHEN NEW.Date_return - NEW.Date_issued > 10 THEN
+			Dues.Library_dues + (NEW.Date_return - NEW.Date_issued)*5
+			ELSE Dues.Library_dues
+			END 
+		WHERE Dues.Roll_no = NEW.Roll_no;
+	END IF;
+END;$$
+
+DELIMITER ;
 
 -- SET FOREIGN_KEY_CHECKS=0;
 
--- COMMIT;
+-- COMMIT; 
