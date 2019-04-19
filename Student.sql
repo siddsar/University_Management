@@ -123,7 +123,7 @@ CREATE TABLE Course_registration (
 	Course_code	VARCHAR(7) NOT NULL,
 	Roll_no	INTEGER NOT NULL,
 	Prof_id	INTEGER NOT NULL,
-	Grade	VARCHAR(1) NOT NULL,
+	Grade	VARCHAR(2) NOT NULL,
 	Sem	TINYINT NOT NULL,
 	Year	SMALLINT NOT NULL,
 	Type_Taken TEXT NOT NULL,
@@ -283,9 +283,9 @@ CREATE TRIGGER course_status_change AFTER UPDATE
 ON Course_request
 FOR EACH ROW
 BEGIN
-	IF NEW.Status = 'Approved' THEN
+	IF NEW.Status = 'Accepted' THEN
 		INSERT INTO Course_registration
-		SET Course_code = NEW.Course_code , Prof_Id = NEW.Prof_Id, Roll_no = NEW.Roll_no, Grade = 'O', Sem = NEW.Sem, Year = NEW.Year, Type_taken = NEW.Type_taken;
+		SET Course_code = NEW.Course_code , Prof_Id = NEW.Prof_Id, Roll_no = NEW.Roll_no, Grade = 'On', Sem = NEW.Sem, Year = NEW.Year, Type_taken = NEW.Type_taken;
 	END IF;
 END;$$
 

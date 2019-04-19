@@ -209,3 +209,30 @@ INSERT into Course_offered values("EE320",1,2019,2002,"DC",b'1000000000000000000
 INSERT into Course_offered values("ME320",1,2019,3001,"DE",b'00100000000000000000001000000000000000000010000000');
 INSERT into Course_offered values("MSE220",1,2019,3001,"DE",b'00100000000000000000001000000000000000000010000000');
 INSERT into Course_offered values("MTH101",1,2019,4001,"IC",b'00100000000000000000001000000000000000000010000000');
+
+INSERT into Course_request values("ESC101",1,2019,1002,180556,"Accepted","IC");
+INSERT into Course_request values("CS330",1,2019,1001,170128,"Pending","ESO");
+INSERT into Course_request values("ESC201",1,2019,2001,170396,"Accepted","IC");
+INSERT into Course_request values("EE320",1,2019,2002,150665,"Pending","DC");
+INSERT into Course_request values("ME320",1,2019,3001,160787,"Rejected","DE");
+INSERT into Course_request values("MSE220",1,2019,3001,160717,"Pending","DE");
+INSERT into Course_request values("MTH101",1,2019,4001,180556,"Pending","IC");
+
+INSERT into Course_Profs values("ESC101",1002,"Instructor in-Charge");
+INSERT into Course_Profs values("ESC101",1001,"Tutor");
+INSERT into Course_Profs values("CS330",1001,"Instructor in-Charge");
+INSERT into Course_Profs values("ESC201",2001,"Instructor in-Charge");
+INSERT into Course_Profs values("ESC201",2002,"Tutor");
+INSERT into Course_Profs values("EE320",2002,"Instructor in-Charge");
+INSERT into Course_Profs values("ME320",3001,"Instructor in-Charge");
+INSERT into Course_Profs values("MSE220",3001,"Instructor in-Charge");
+INSERT into Course_Profs values("MTH101",4001,"Instructor in-Charge");
+
+INSERT into TA values("ME320",1,2019,160083);
+INSERT into TA values("EE320",1,2019,160691);
+INSERT into TA values("CS330",1,2019,150320);
+
+INSERT into Mentoring values(1001,150657,'CS399');
+INSERT into Mentoring values(1002,150512,'CS699');
+INSERT into Mentoring values(1002,150320,'CS799');
+
