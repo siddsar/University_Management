@@ -1,4 +1,4 @@
-<?php 
+<?php
 include_once 'includes/db_connect.php';
 include_once 'includes/functions.php';
 
@@ -51,7 +51,7 @@ function createTable_from_sql_select_query($query) {
         <title>Secure Login: Protected Page</title>
          <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-<!--===============================================================================================-->	
+<!--===============================================================================================-->
 	<link rel="icon" type="image/png" href="Table_Format/images/icons/favicon.ico"/>
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="Table_Format/vendor/bootstrap/css/bootstrap.min.css">
@@ -82,7 +82,7 @@ function createTable_from_sql_select_query($query) {
                     <button name="test"class="form-control" >Search</button>
             </form>
 </div>
-            <?php 
+            <?php
                 if(isset($_POST["test"]))
                 {
                     if(!isset($_POST["query"]))
@@ -92,7 +92,7 @@ function createTable_from_sql_select_query($query) {
                     else{
                         $query = $_POST["query"];
                         printf("%s\n",$query);
-                        
+
                         $sql_link = $mysqli;// Database connection
                         $sql_link->set_charset("utf8");
                         $result = $sql_link->query($query);
@@ -137,6 +137,80 @@ function createTable_from_sql_select_query($query) {
                     }
                 }
             ?>
+
+            <div class="form-group">
+                <form action="" method="POST">
+                        <input type = "text" class="form-control" value = "" name = "update"/>
+            </div>
+            <div class="form-group">
+                        <button name="upd"class="form-control" >Update/Insert/Delete</button>
+                </form>
+            </div>
+                <?php
+                    if(isset($_POST["upd"]))
+                    {
+                        if(!isset($_POST["update"]))
+                        {
+                            printf("No query\n");
+                        }
+                        else{
+                            $query = $_POST["update"];
+                            printf("%s\n",$query);
+
+                            $sql_link = $mysqli;// Database connection
+                            $sql_link->set_charset("utf8");
+                            if($sql_link->query($query) == TRUE)
+				{
+					echo "Updated successfully";
+				}
+				else
+				{
+					echo "Error :",$sql_link->error;
+}
+                            // printf("CPT 1\n");
+                            // Adding Missing array_column Function for Old PHP Versions (<5.5)
+                            // if (!function_exists('array_column')) {
+                            //
+                            //     function array_column($array, $column) {
+                            //         $ret = array();
+                            //         foreach ($array as $row)
+                            //             $ret[] = $row[$column];
+                            //         return $ret;
+                            //     }
+                            // 
+                            // }
+                            // printf("cpt2\n");
+                            //$headings = json_decode(json_encode($result->fetch_fields()), true);
+                            //echo $headings;
+
+                            // $headings = array_column($headings, 'name');
+                            // // printf("cpt3\n");
+                            // $return ="<div class='table100 ver3 m-b-110'><div class='table100-head'><table>";
+                            // $return .= '<thead><tr class = "row100 head">';
+                            // for ($x = 0; $x <= (count($headings) - 1); $x++) {
+                            // $return .= "<th class = 'cell100 column".($x+1)."'>" . ucwords(str_replace('_', ' ', (strtolower($headings[$x])))) . '</th>';
+                            // }
+                            // $return .= '</tr></thead></table></div>';
+                            // while ($row = $result->fetch_object()) {
+                            //     // printf("**********************\n");
+                            // $return .= '<div class="table100-body js-pscroll"><table><tbody><tr class = "row100 body">';
+                            // for ($x = 0; $x <= (count($headings) - 1); $x++) {
+                            //     $h = $headings[$x];
+                            // // printf("%s ** %s ** ", $headings[$x], $row->$h );
+                            // $return .= '<td class = "cell100 column'.($x+1).'">'. $row->$h . '</td>';
+                            // }
+                            // $return .= '</tr>';
+                            // }
+                            // $return .= '</tbody></table></div></div>';
+                            // // printf("cpt4\n");
+                            // $html =  $return;
+                            //
+                            // // echo "hello";
+                            // print($html);
+                        }
+                    }
+                ?>
+<a href="index.php">Go back to login page</a>
         <?php else : ?>
             <p>
                 <span class="error">You are not authorized to access this page.</span> Please <a href="index.php">login</a>.
@@ -144,6 +218,3 @@ function createTable_from_sql_select_query($query) {
         <?php endif; ?>
     </body>
 </html>
-
-
-
