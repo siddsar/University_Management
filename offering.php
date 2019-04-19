@@ -57,107 +57,69 @@ sec_session_start();
          }
       ?>
 
-      <h2>Requests pending</h2>
+      <h2>Offer Courses</h2>
       
       
 
 <?php 
 
 
-$email = $_SESSION["email"];
-$sql = "SELECT * from Professor where Email_id = '". $email. "';";
+$sql = "SELECT Sem,Year from Ongoing where Today = CURDATE();";
 // print($sql);
 $res = $mysqli->query($sql);
 $row = $res->fetch_assoc();
-$row = $row["Prof_id"];
-// print($row);
-$sql = "SELECT * FROM Course_request where Prof_id = $row and status = 'Pending'; ";
-$result = $mysqli->query($sql) ;
+$sem = $row["Sem"];
+$year = $row["Year"];
+$email = $_SESSION["email"];
+// print($email);
+$sql = "SELECT Prof_id from Professor where Email_id = '$email';";
+// print($sql);
+$res = $mysqli->query($sql);
+$row = $res->fetch_assoc();
+$pid = $row["Prof_id"];
+// print($roll);
+
+ 
 ?>
-<div class='table100 ver3 m-b-110'>
-      <div class="table100-body js-pscroll">
-<?php
 
+<div class = "form-group">
+                  <form action="" method="POST">
+                  <input type ="text" value = "Enter Course no" class = "form-control" name = "Course_code">
+                  <input type ="text" value = "Enter Type Offered" class = "form-control" name = "Course_type">
+                  <input type ="text" value = "Enter Time Slot" class = "form-control" name = "Time">
+                  <button name ="Offer" class = "btn btn-primary">Offer</button>
+                  </div>   
+                  </form>
+                  <?php 
+                  if(isset($_POST["Offer"]))
+                  {     
+                     
+                      
+                     
+                     if($query = $mysqli->prepare("INSERT INTO Course_offered values(?,?,?,?,?,?);"))
+                     {
+                                             
+                        $query->bind_param('siiisi',$_POST["Course_code"],$sem,$year,$pid,$_POST["Course_type"],($_POST["Time"]));
+                        // print($query);
+                        if (!$query->execute()) {
+                           header('Location: ../error.php?err=Registration failure: INSERT');
+                           exit();
+                       }
+                       
+                     }
 
-while($row = $result->fetch_assoc()) {
-?>
-      <form method = "POST" action = "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-      
-      
-         <table><tbody><tr class = "row100 body">
-      <td class = "cell100 column1"><?php echo $row["Course_code"] ?></td>
-		<td class = "cell100 column2"><?php echo $row["Roll_no"] ?></td>
-      <script>
-         var cc = <?php echo $row['Course_code']?>;
-         var roll = <?php echo $row['Roll_no']?>;
-      </script>
-             
-                  <td class = "cell100 column3">
-                  ***
-               </td>
+                     printf("Successfully Offered!");
+                     
+                  }
 
-            </tr>
-           
+                  ?>
 
-      <?php
-          }  
-      ?>
-       </tbody>
-         </table>
-               </div>
-               </div>
 <?php else : ?>
             <p>
                 <span class="error">You are not authorized to access this page.</span> Please <a href="index.php">login</a>.
             </p>
-        <?php endif; ?>
-        <div class = "form-group">
-                  <form action="" method="POST">
-                  <input type ="text" value = "Enter Roll no" class = "form-control" name = "Roll_no">
-                  <input type ="text" value = "Enter Course Code" class = "form-control" name = "Course_code">
-                  <button name ="Accepted" class = "btn btn-primary">Accept</button>
-                  <button name ="Rejected" class = "btn btn-primary">Reject</button> 
-                  </div>   
-                  </form>
-                  <?php 
-                  if(isset($_POST["Accepted"]))
-                  {  
-                     
-                     if($query = $mysqli->prepare("UPDATE Course_request SET Status = 'Accepted' WHERE Course_code = ? and Roll_no = ?;"))
-                     {
-                        
-                        $query->bind_param('si',$_POST['Course_code'],$_POST['Roll_no']);
-                        
-                        if (!$query->execute()) {
-                           header('Location: ../error.php?err=Registration failure: INSERT');
-                           exit();
-                       }
-                       
-                     }
-
-                     printf("Successfully Accepted!");
-                     
-                  }
-
-                  else if(isset($_POST["Rejected"]))
-                  {  
-                     
-                     if($query = $mysqli->prepare("UPDATE Course_request SET Status = 'Rejected' WHERE Course_code = ? and Roll_no = ?;"))
-                     {
-                        
-                        $query->bind_param('si',$_POST['Course_code'],$_POST['Roll_no']);
-                        
-                        if (!$query->execute()) {
-                           header('Location: ../error.php?err=Registration failure: INSERT');
-                           exit();
-                       }
-                       
-                     }
-
-                     printf("Successfully Rejected!");
-                     
-                  }
-                  ?>
+<?php endif; ?>
+       
    </body>
 </html>
 
