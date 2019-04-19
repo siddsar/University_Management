@@ -79,7 +79,7 @@ function createTable_from_sql_select_query($query) {
                     <input type = "text" class="form-control" value = "Select queries here!" name = "query"/>
 </div>
 <div class="form-group">
-                    <button name="test"class="form-control" >Search</button>
+                    <button name="test" class = "btn btn-primary" >Search</button>
             </form>
 </div>
             <?php 

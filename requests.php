@@ -11,6 +11,29 @@ sec_session_start();
 
 <!DOCTYPE html>
 <html>
+   <head>
+   <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="Table_Format/images/icons/favicon.ico"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="Table_Format/vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="Table_Format/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="Table_Format/vendor/animate/animate.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="Table_Format/vendor/select2/select2.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="Table_Format/vendor/perfect-scrollbar/perfect-scrollbar.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="Table_Format/css/util.css">
+	<link rel="stylesheet" type="text/css" href="Table_Format/css/main.css">
+<!--===============================================================================================-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
 
    <body>
 <?php if (login_check($mysqli) == true) : ?>
@@ -35,38 +58,8 @@ sec_session_start();
       ?>
 
       <h2>Requests pending</h2>
-<script>
-	function accept_c(course_code,roll_no){
-		console.log("blah");
-		console.log(course_code);
-		var mysql = require('mysql');		
-		var con = mysql.createConnection({
-  			host: "localhost",
-			user: "root",
-  			password: "sidanusar",
-			database: "secure_login"
-		});
       
-		con.connect(function(err) {
-  			if (err) throw err;
-  			con.query("UPDATE Course_request SET address = 'Approved' WHERE Course_code = '".concat(course_code,"' AND Roll_no = ",roll_no,";"), function (err, result, fields) {
-    				if (err) throw err;
-    				console.log(result);
-  			});
-		});
-		
-
-		
-	}
-function reject_c(course_code,roll_no){
-		console.log(course_code);
-		var sql = "UPDATE Course_request SET address = 'Rejected' WHERE Course_code = ".concat("'",Course_code,"' and Roll_no = ",roll_no.toString());
-  		ums_db.query(sql, function (err, result) {
-		    if (err) throw err;
-		    console.log(result.affectedRows + " record(s) updated");
-  });	
-	}
-</script>
+      
 
 <?php 
 
@@ -86,24 +79,26 @@ $result = $mysqli->query($sql) ;
 while($row = $result->fetch_assoc()) {
 ?>
       <form method = "POST" action = "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-         <table>
-
-		<tr>
-      <td>Requests:</td>
-		<td><?php echo $row["Roll_no"] ?></td>
+      <div class='table100 ver3 m-b-110'>
+      <div class="table100-body js-pscroll">
+      
+         <table><tbody><tr class = "row100 body">
+      <td class = "cell100 column1"><?php echo $row["Course_code"] ?></td>
+		<td class = "cell100 column2"><?php echo $row["Roll_no"] ?></td>
       <script>
          var cc = <?php echo $row['Course_code']?>;
          var roll = <?php echo $row['Roll_no']?>;
       </script>
              
-                  <td>
-                  <input type="button" value="Accepted" onclick="accept_c(cc,roll)">
-                  <input type="button" value="Rejected" onclick="reject_c(cc,roll)">  
+                  <td class = "cell100 column3">
+                  ***
                </td>
 
             </tr>
-
+               </tbody>
          </table>
+               </div>
+               </div>
       </form>
 
       <?php
@@ -114,7 +109,53 @@ while($row = $result->fetch_assoc()) {
                 <span class="error">You are not authorized to access this page.</span> Please <a href="index.php">login</a>.
             </p>
         <?php endif; ?>
+        <div class = "form-group">
+                  <form action="" method="POST">
+                  <input type ="text" value = "Enter Roll no" class = "form-control" name = "Roll_no">
+                  <input type ="text" value = "Enter Course Code" class = "form-control" name = "Course_code">
+                  <button name ="Accepted" class = "btn btn-primary">Accept</button>
+                  <button name ="Rejected" class = "btn btn-primary">Reject</button> 
+                  </div>   
+                  </form>
+                  <?php 
+                  if(isset($_POST["Accepted"]))
+                  {  
+                     
+                     if($query = $mysqli->prepare("UPDATE Course_request SET Status = 'Accepted' WHERE Course_code = ? and Roll_no = ?;"))
+                     {
+                        
+                        $query->bind_param('si',$_POST['Course_code'],$_POST['Roll_no']);
+                        
+                        if (!$query->execute()) {
+                           header('Location: ../error.php?err=Registration failure: INSERT');
+                           exit();
+                       }
+                       
+                     }
 
+                     printf("Successfully Accepted!");
+                     
+                  }
+
+                  else if(isset($_POST["Rejected"]))
+                  {  
+                     
+                     if($query = $mysqli->prepare("UPDATE Course_request SET Status = 'Rejected' WHERE Course_code = ? and Roll_no = ?;"))
+                     {
+                        
+                        $query->bind_param('si',$_POST['Course_code'],$_POST['Roll_no']);
+                        
+                        if (!$query->execute()) {
+                           header('Location: ../error.php?err=Registration failure: INSERT');
+                           exit();
+                       }
+                       
+                     }
+
+                     printf("Successfully Rejected!");
+                     
+                  }
+                  ?>
    </body>
 </html>
 
