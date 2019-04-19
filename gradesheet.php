@@ -11,7 +11,7 @@ sec_session_start();
         <title> Grade Sheet</title>
         <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-<!--===============================================================================================-->	
+<!--===============================================================================================-->
 	<link rel="icon" type="image/png" href="Table_Format/images/icons/favicon.ico"/>
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="Table_Format/vendor/bootstrap/css/bootstrap.min.css">
@@ -37,7 +37,7 @@ sec_session_start();
             <div class="container-table100">
 			<div class="wrap-table100">
             <div><h2>Grade Sheet for <?php echo htmlentities($_SESSION['username'])?> </h2></div>
-    <?php 
+    <?php
     if( $stmt = $mysqli_ums->prepare("SELECT Course_registration.Course_code, Course.Course_name, Course.Credits, Course_registration.Grade , Course_registration.Year, Course_registration.Sem FROM Course_registration, Course, Student WHERE Course_registration.Course_code = Course.Course_code AND Student.Roll_no = Course_registration.Roll_no AND Student.Email_id = ? ORDER BY Year, Sem;"))
     {
         $stmt->bind_param('s', $_SESSION['email']);  // Bind "$email" to parameter.
@@ -69,9 +69,9 @@ sec_session_start();
                     if($sem_credits != 0)
                     {
                         $spi = $weighted_sem_credits / $sem_credits;
-                        
+
                         echo "<div class = 'well-sm'><h4> SPI : ". $spi . "</h4></div>";
-                        
+
                     }
                     else
                     {
@@ -82,7 +82,7 @@ sec_session_start();
                     $weighted_sem_credits = 0;
                     $sem_credits = 0;
                 }
-                
+
 
                 $prev_sem = $sem;
                 $prev_yr = $year;
@@ -129,29 +129,29 @@ sec_session_start();
                 $total_credits += $credits;
                 $weighted_sum += $credits * $gp;
             }
-            
+
                 echo "<div class='table100-body js-pscroll'>";
                 echo "<table>";
                 echo "<tbody>";
                 echo "<tr class = 'row100 body'><td class = 'cell100 column1'> ".$ccode." </td> <td class = 'cell100 column2'>".$cname." </td> <td  class = 'cell100 column3'> ".$credits."</td> <td class = 'cell100 column4'>".$grade." </td> </tr> ";
-               
+
         }
-        
-        
+
+
     }
     else
     {
         header("Location: ../error.php?err=Database error: cannot prepare statement");
         exit();
     }
-    
-    ?>
-    
-    </div>
-    </div>
-    
-    
 
+    ?>
+
+    </div>
+    </div>
+
+
+<p><a href="index.php">Go back to login page</a></p>
 
 </body>
 </html>

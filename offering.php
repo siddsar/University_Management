@@ -14,7 +14,7 @@ sec_session_start();
    <head>
    <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-<!--===============================================================================================-->	
+<!--===============================================================================================-->
 	<link rel="icon" type="image/png" href="Table_Format/images/icons/favicon.ico"/>
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="Table_Format/vendor/bootstrap/css/bootstrap.min.css">
@@ -58,10 +58,10 @@ sec_session_start();
       ?>
 
       <h2>Offer Courses</h2>
-      
-      
 
-<?php 
+
+
+<?php
 
 
 $sql = "SELECT Sem,Year from Ongoing where Today = CURDATE();";
@@ -79,7 +79,7 @@ $row = $res->fetch_assoc();
 $pid = $row["Prof_id"];
 // print($roll);
 
- 
+
 ?>
 
 <div class = "form-group">
@@ -88,38 +88,37 @@ $pid = $row["Prof_id"];
                   <input type ="text" value = "Enter Type Offered" class = "form-control" name = "Course_type">
                   <input type ="text" value = "Enter Time Slot" class = "form-control" name = "Time">
                   <button name ="Offer" class = "btn btn-primary">Offer</button>
-                  </div>   
+                  </div>
                   </form>
-                  <?php 
+                  <?php
                   if(isset($_POST["Offer"]))
-                  {     
-                     
-                      
-                     
+                  {
+
+
+
                      if($query = $mysqli->prepare("INSERT INTO Course_offered values(?,?,?,?,?,?);"))
                      {
-                                             
+
                         $query->bind_param('siiisi',$_POST["Course_code"],$sem,$year,$pid,$_POST["Course_type"],($_POST["Time"]));
                         // print($query);
                         if (!$query->execute()) {
                            header('Location: ../error.php?err=Registration failure: INSERT');
                            exit();
                        }
-                       
+
                      }
 
                      printf("Successfully Offered!");
-                     
+
                   }
 
                   ?>
-
+<p><a href="index.php">Go back to login page</a></p>
 <?php else : ?>
             <p>
                 <span class="error">You are not authorized to access this page.</span> Please <a href="index.php">login</a>.
             </p>
 <?php endif; ?>
-       
+
    </body>
 </html>
-

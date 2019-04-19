@@ -86,6 +86,6 @@ $row = $row["Prof_id"];
 $sql = "SELECT email FROM members WHERE username = '$user_id'";
 
       ?>
-
+<p><a href="index.php">Go back to login page</a></p>
    </body>
 </html>

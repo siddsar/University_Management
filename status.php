@@ -14,7 +14,7 @@ sec_session_start();
    <head>
    <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-<!--===============================================================================================-->	
+<!--===============================================================================================-->
 	<link rel="icon" type="image/png" href="Table_Format/images/icons/favicon.ico"/>
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="Table_Format/vendor/bootstrap/css/bootstrap.min.css">
@@ -58,10 +58,10 @@ sec_session_start();
       ?>
 
       <h2>Course Status</h2>
-      
-      
 
-<?php 
+
+
+<?php
 
 
 $sql = "SELECT Sem,Year from Ongoing where Today = CURDATE();";
@@ -80,7 +80,7 @@ $roll = $row["Roll_no"];
 // print($roll);
 $sql = "SELECT Course_request.Course_code, Professor.Prof_id, Professor.Name, Course_request.Status FROM Course_request, Professor where Course_request.Roll_no = $roll and Sem = $sem and Year = $year and Professor.Prof_id = Course_request.Prof_id;";
 $result = $mysqli->query($sql) ;
- 
+
 ?>
 <div class='table100 ver3 m-b-110'>
       <div class="table100-body js-pscroll">
@@ -89,13 +89,13 @@ $result = $mysqli->query($sql) ;
 while($row = $result->fetch_assoc()) {
 ?>
       <form method = "POST" action = "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-      
-      
+
+
          <table><tbody><tr class = "row100 body">
       <td class = "cell100 column1"><?php echo $row["Course_code"] ?></td>
 		<td class = "cell100 column2"><?php echo $row["Name"] ?></td>
-      
-             
+
+
                   <td class = "cell100 column3">
                   <?php echo $row["Prof_id"] ?>
                </td>
@@ -105,22 +105,22 @@ while($row = $result->fetch_assoc()) {
                </td>
 
             </tr>
-             
+
       </form>
 
       <?php
-          }  
+          }
       ?>
        </tbody>
          </table>
                </div>
                </div>
+<p><a href="index.php">Go back to login page</a></p>
 <?php else : ?>
             <p>
                 <span class="error">You are not authorized to access this page.</span> Please <a href="index.php">login</a>.
             </p>
         <?php endif; ?>
-        
+
    </body>
 </html>
-

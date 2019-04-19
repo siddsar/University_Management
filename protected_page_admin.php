@@ -177,7 +177,7 @@ function createTable_from_sql_select_query($query) {
                             //             $ret[] = $row[$column];
                             //         return $ret;
                             //     }
-                            // 
+                            //
                             // }
                             // printf("cpt2\n");
                             //$headings = json_decode(json_encode($result->fetch_fields()), true);
@@ -210,7 +210,7 @@ function createTable_from_sql_select_query($query) {
                         }
                     }
                 ?>
-<a href="index.php">Go back to login page</a>
+<p><a href="index.php">Go back to login page</a></p>
         <?php else : ?>
             <p>
                 <span class="error">You are not authorized to access this page.</span> Please <a href="index.php">login</a>.

@@ -14,7 +14,7 @@ sec_session_start();
    <head>
    <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-<!--===============================================================================================-->	
+<!--===============================================================================================-->
 	<link rel="icon" type="image/png" href="Table_Format/images/icons/favicon.ico"/>
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="Table_Format/vendor/bootstrap/css/bootstrap.min.css">
@@ -58,10 +58,10 @@ sec_session_start();
       ?>
 
       <h2>Requests pending</h2>
-      
-      
 
-<?php 
+
+
+<?php
 
 
 $email = $_SESSION["email"];
@@ -82,8 +82,8 @@ $result = $mysqli->query($sql) ;
 while($row = $result->fetch_assoc()) {
 ?>
       <form method = "POST" action = "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-      
-      
+
+
          <table><tbody><tr class = "row100 body">
       <td class = "cell100 column1"><?php echo $row["Course_code"] ?></td>
 		<td class = "cell100 column2"><?php echo $row["Roll_no"] ?></td>
@@ -91,16 +91,16 @@ while($row = $result->fetch_assoc()) {
          var cc = <?php echo $row['Course_code']?>;
          var roll = <?php echo $row['Roll_no']?>;
       </script>
-             
+
                   <td class = "cell100 column3">
                   ***
                </td>
 
             </tr>
-           
+
 
       <?php
-          }  
+          }
       ?>
        </tbody>
          </table>
@@ -116,48 +116,48 @@ while($row = $result->fetch_assoc()) {
                   <input type ="text" value = "Enter Roll no" class = "form-control" name = "Roll_no">
                   <input type ="text" value = "Enter Course Code" class = "form-control" name = "Course_code">
                   <button name ="Accepted" class = "btn btn-primary">Accept</button>
-                  <button name ="Rejected" class = "btn btn-primary">Reject</button> 
-                  </div>   
+                  <button name ="Rejected" class = "btn btn-primary">Reject</button>
+                  </div>
                   </form>
-                  <?php 
+                  <?php
                   if(isset($_POST["Accepted"]))
-                  {  
-                     
+                  {
+
                      if($query = $mysqli->prepare("UPDATE Course_request SET Status = 'Accepted' WHERE Course_code = ? and Roll_no = ?;"))
                      {
-                        
+
                         $query->bind_param('si',$_POST['Course_code'],$_POST['Roll_no']);
-                        
+
                         if (!$query->execute()) {
                            header('Location: ../error.php?err=Registration failure: INSERT');
                            exit();
                        }
-                       
+
                      }
 
                      printf("Successfully Accepted!");
-                     
+
                   }
 
                   else if(isset($_POST["Rejected"]))
-                  {  
-                     
+                  {
+
                      if($query = $mysqli->prepare("UPDATE Course_request SET Status = 'Rejected' WHERE Course_code = ? and Roll_no = ?;"))
                      {
-                        
+
                         $query->bind_param('si',$_POST['Course_code'],$_POST['Roll_no']);
-                        
+
                         if (!$query->execute()) {
                            header('Location: ../error.php?err=Registration failure: INSERT');
                            exit();
                        }
-                       
+
                      }
 
                      printf("Successfully Rejected!");
-                     
+
                   }
                   ?>
+<p><a href="index.php">Go back to login page</a></p>
    </body>
 </html>
-

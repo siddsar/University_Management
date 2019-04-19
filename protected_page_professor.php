@@ -33,6 +33,7 @@ sec_session_start();
             <p><a href="submitgrade.php">Submit Grade</a></p>
             <p><a href="requests.php">Course Requests</a></p>
             <p><a href="offering.php">Course Offering</a></p>
+            <p><a href="index.php">Go back to login page</a></p>
             <!-- <p><a href="status.php">View Course Status</a></p> -->
         <?php else : ?>
             <p>

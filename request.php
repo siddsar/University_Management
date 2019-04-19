@@ -14,7 +14,7 @@ sec_session_start();
    <head>
    <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-<!--===============================================================================================-->	
+<!--===============================================================================================-->
 	<link rel="icon" type="image/png" href="Table_Format/images/icons/favicon.ico"/>
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="Table_Format/vendor/bootstrap/css/bootstrap.min.css">
@@ -58,10 +58,10 @@ sec_session_start();
       ?>
 
       <h2>Requests Courses</h2>
-      
-      
 
-<?php 
+
+
+<?php
 
 
 $sql = "SELECT Sem,Year from Ongoing where Today = CURDATE();";
@@ -80,7 +80,7 @@ $roll = $row["Roll_no"];
 // print($roll);
 $sql = "SELECT Course_offered.Course_code, Professor.Prof_id, Professor.Name, Course_offered.Type_offered FROM Course_offered, Professor where Sem = $sem and Year = $year and Professor.Prof_id = Course_offered.Prof_incharge_id;";
 $result = $mysqli->query($sql) ;
- 
+
 ?>
 <div class='table100 ver3 m-b-110'>
       <div class="table100-body js-pscroll">
@@ -89,13 +89,13 @@ $result = $mysqli->query($sql) ;
 while($row = $result->fetch_assoc()) {
 ?>
       <form method = "POST" action = "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-      
-      
+
+
          <table><tbody><tr class = "row100 body">
       <td class = "cell100 column1"><?php echo $row["Course_code"] ?></td>
 		<td class = "cell100 column2"><?php echo $row["Name"] ?></td>
-      
-             
+
+
                   <td class = "cell100 column3">
                   <?php echo $row["Prof_id"] ?>
                </td>
@@ -105,11 +105,11 @@ while($row = $result->fetch_assoc()) {
                </td>
 
             </tr>
-               
+
       </form>
 
       <?php
-          }  
+          }
       ?>
       </tbody>
          </table>
@@ -126,31 +126,31 @@ while($row = $result->fetch_assoc()) {
                   <input type ="text" value = "Enter Prof id" class = "form-control" name = "Prof_id">
                   <input type ="text" value = "Course Type" class = "form-control" name = "Course_type">
                   <button name ="Request" class = "btn btn-primary">Request</button>
-                  </div>   
+                  </div>
                   </form>
-                  <?php 
+                  <?php
                   if(isset($_POST["Request"]))
-                  {     
-                     
-                      
-                     
+                  {
+
+
+
                      if($query = $mysqli->prepare("INSERT INTO Course_request values(?,?,?,?,?,'Pending',?);"))
                      {
-                                             
+
                         $query->bind_param('siiiis',$_POST["Course_code"],$sem,$year,$_POST["Prof_id"],$roll,$_POST["Course_type"]);
                         // print($query);
                         if (!$query->execute()) {
                            header('Location: ../error.php?err=Registration failure: INSERT');
                            exit();
                        }
-                       
+
                      }
 
                      printf("Successfully Requested!");
-                     
+
                   }
 
                   ?>
+<p><a href="index.php">Go back to login page</a></p>
    </body>
 </html>
-
