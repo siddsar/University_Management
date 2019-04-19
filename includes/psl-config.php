@@ -31,7 +31,7 @@
 define("HOST", "localhost"); 			// The host you want to connect to.
 define("USER", "root"); 			// The database username.
 define("PASSWORD", "sidanusar"); 	// The database password.
-define("DATABASE", "secure_login");             // The database name.
+define("DATABASE", "ums_db");             // The database name.
 
 /**
  * Who can register and what the default role will be
