@@ -11,12 +11,12 @@ INSERT into Course_request values("CS330",1,2019,1001,170128,"Pending","ESO");
 INSERT into Course_request values("ESC201",1,2019,2001,170396,"Accepted","IC");
 INSERT into Course_request values("EE320",1,2019,2002,150665,"Pending","DC");
 INSERT into Course_request values("ME320",1,2019,3001,160787,"Rejected","DE");
-INSERT into Course_request values("MSE320",1,2019,3001,160717,"Pending","DE");
+INSERT into Course_request values("MSE220",1,2019,3001,160717,"Pending","DE");
 INSERT into Course_request values("MTH101",1,2019,4001,180556,"Pending","IC");
 
 insert into TA values("ME320",1,2019,160083);
 insert into TA values("EE320",1,2019,160691);
-insert into TA values("ES0207",1,2019,150320);
+insert into TA values("CS330",1,2019,150320);
 
 insert into Mentoring values(1001,150657,'CS399');
 insert into Mentoring values(1002,150512,'CS699');

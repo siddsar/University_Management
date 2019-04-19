@@ -185,18 +185,27 @@ INSERT into Attendance_salary values("Professor",1001,25,150000);
 INSERT into Attendance_salary values("Project Engineer",9001,22,65000);
 
 
-insert into Doctor values(1001,'Rita Mathur','MS','ENT','rita@gmail.com',9876543210);
-insert into Doctor values(1002,'Anand dubey','MS','Ortho','dubey@gmail.com',9876543220);
-insert into Doctor values(1003,'Dinesh Shah','MD','Medicine','shah@gmail.com',9874563210);
+INSERT into Doctor values(1001,'Rita Mathur','MS','ENT','rita@gmail.com',9876543210);
+INSERT into Doctor values(1002,'Anand dubey','MS','Ortho','dubey@gmail.com',9876543220);
+INSERT into Doctor values(1003,'Dinesh Shah','MD','Medicine','shah@gmail.com',9874563210);
 
-insert into Doctor_availability values(1001,1100,0011,1010,1010,1010,1100,0001);
-insert into Doctor_availability values(1002,0001,1100,0111,0110,1011,0110,0011);
-insert into Doctor_availability values(1003,0011,0111,0110,0001,1110,0011,1100);
+INSERT into Doctor_availability values(1001,1100,0011,1010,1010,1010,1100,0001);
+INSERT into Doctor_availability values(1002,0001,1100,0111,0110,1011,0110,0011);
+INSERT into Doctor_availability values(1003,0011,0111,0110,0001,1110,0011,1100);
 
-insert into Treatment values('Professor',2001,'Spouse',1001);
-insert into Treatment values('Student',160787,'Self',1002);
-insert into Treatment values('Staff',9001,'Self',1003);
+INSERT into Treatment values('Professor',2001,'Spouse',1001);
+INSERT into Treatment values('Student',160787,'Self',1002);
+INSERT into Treatment values('Staff',9001,'Self',1003);
 
-insert into Patient_appointment values('Professor',2001,1001,1,'2019-03-12 09:00:00');
-insert into Patient_appointment values('Student',160787,1002,2,'2019-03-12 12:00:00');
-insert into Patient_appointment values('Staff',9001,1003,3,'2019-03-12 14:00:00');
+INSERT into Patient_appointment values('Professor',2001,1001,1,'2019-03-12 09:00:00');
+INSERT into Patient_appointment values('Student',160787,1002,2,'2019-03-12 12:00:00');
+INSERT into Patient_appointment values('Staff',9001,1003,3,'2019-03-12 14:00:00');
+
+
+INSERT into Course_offered values("ESC101",1,2019,1002,"IC",b'00001011100000001110000010111000000011100000101110');
+INSERT into Course_offered values("CS330",1,2019,1001,"ESO",b'00100000000000000000001000000000000000000010000000');
+INSERT into Course_offered values("ESC201",1,2019,2001,"IC",b'10000011100000001110100000111000000011101000001110');
+INSERT into Course_offered values("EE320",1,2019,2002,"DC",b'10000000000000000000100000000000000000001000000000');
+INSERT into Course_offered values("ME320",1,2019,3001,"DE",b'00100000000000000000001000000000000000000010000000');
+INSERT into Course_offered values("MSE220",1,2019,3001,"DE",b'00100000000000000000001000000000000000000010000000');
+INSERT into Course_offered values("MTH101",1,2019,4001,"IC",b'00100000000000000000001000000000000000000010000000');

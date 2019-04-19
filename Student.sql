@@ -93,7 +93,7 @@ CREATE TABLE Course_offered (
 	Year	SMALLINT NOT NULL,
 	Prof_incharge_id	INTEGER NOT NULL,
 	Type_offered	TEXT NOT NULL,
-	Time_slot	INTEGER NOT NULL,
+	Time_slot	BIT(50) NOT NULL,
 	FOREIGN KEY(Prof_incharge_id) REFERENCES Professor(Prof_id),
 	FOREIGN KEY(Course_code) REFERENCES Course(Course_code),
 	PRIMARY KEY(Course_code,Sem,Year)
@@ -293,7 +293,7 @@ CREATE TRIGGER CPI AFTER UPDATE
 ON Course_registration
 FOR EACH ROW
 BEGIN
-	IF NEW.Grade <> 'O' THEN
+	IF NEW.Grade <> 'On' THEN
 		UPDATE Student
 		SET Student.CPI = (
 			select CAST(sum(Course.Credits*Grade.Grade_point) as DECIMAL)/sum(Course.Credits)
