@@ -50,7 +50,13 @@
 -- INSERT into Course values("ESC101","Introduction to Programming",14);
 -- INSERT into Course values("ESC201","Introduction to Electronics",14);
 -- INSERT into Course values("CS330","Operating Systems",12);
+-- INSERT into Course values("CS399","UG Thesis",9);
+-- INSERT into Course values("CS699","MT Thesis",18);
+-- INSERT into Course values("CS799","PhD Thesis",18);
 -- INSERT into Course values("EE320","Communication Systems",11);
+-- INSERT into Course values("EE399","UG Thesis",9);
+-- INSERT into Course values("EE699","MT Thesis",18);
+-- INSERT into Course values("EE799","PhD Thesis",18);
 -- INSERT into Course values("MTH101","Calculus",11);
 -- INSERT into Course values("MTH102","Linear Algebra",11);
 -- INSERT into Course values("MTH201","Probability and Statistics",11);
