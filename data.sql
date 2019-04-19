@@ -88,6 +88,17 @@ INSERT into Professor values(3002,"Nachiketan","nch@iitk.ac.in","1965-07-20","19
 INSERT into Professor values(4001,"Subhra Dhar","sdhar@iitk.ac.in","1985-07-20","2015-07-20","MTH","FB510");
 INSERT into Professor values(4002,"Shunmugraj","shun@iitk.ac.in","1965-07-20","1995-07-20","MTH","FB520");
 
+insert into Prof_Designation values(1001,"Professor");
+insert into Prof_Designation values(1002,"Professor");
+insert into Prof_Designation values(2001,"Assistant Professor");
+insert into Prof_Designation values(1001,"HOD");
+insert into Prof_Designation values(4002,"Professor");
+insert into Prof_Designation values(4002,"DOSA");
+insert into Prof_Designation values(3001,"Assistant Professor");
+insert into Prof_Designation values(2002,"Professor");
+insert into Prof_Designation values(4001,"Associate Professor");
+insert into Prof_Designation values(3002,"Professor");
+
 INSERT into Student_Program values(150657,1);
 INSERT into Student_Program values(150512,2);
 INSERT into Student_Program values(150320,3);
@@ -244,7 +255,6 @@ INSERT into Bookings values("SnT General Secretary","L7","LHC","2019-04-30 19:00
 
 
 
-UPDATE Course_request set status="Accepted" where Course_code="ESC101" and Roll_no=180556;
-
-UPDATE Course_registration set grade="A" where Course_code="ESC101" and Roll_no=180556;
-
+-- UPDATE Course_request set status="Accepted" where Course_code="ESC101" and Roll_no=180556;
+--
+-- UPDATE Course_registration set grade="A" where Course_code="ESC101" and Roll_no=180556;
