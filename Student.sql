@@ -160,18 +160,6 @@ CREATE TABLE Pre_req (
 	FOREIGN KEY(Prereq_course_code) REFERENCES Course(Course_code),
 	PRIMARY KEY(Course_code,Prereq_course_code)
 );
-CREATE TABLE Course_request (
-	Course_code	VARCHAR(7) NOT NULL,
-	Sem	TINYINT NOT NULL,
-	Year	SMALLINT NOT NULL,
-	Prof_id	INTEGER NOT NULL,
-	Roll_no	INTEGER NOT NULL,
-	Status	TEXT NOT NULL,
-	Type_Taken TEXT NOT NULL,
-	FOREIGN KEY(Roll_no) REFERENCES Student(Roll_no),
-	FOREIGN KEY(Prof_id) REFERENCES Professor(Prof_id),
-	PRIMARY KEY(Course_code,Sem,Year,Roll_no)
-);
 CREATE TABLE Course_offered (
 	Course_code	VARCHAR(7) NOT NULL,
 	Sem	TINYINT NOT NULL,
@@ -182,6 +170,19 @@ CREATE TABLE Course_offered (
 	FOREIGN KEY(Prof_incharge_id) REFERENCES Professor(Prof_id),
 	FOREIGN KEY(Course_code) REFERENCES Course(Course_code),
 	PRIMARY KEY(Course_code,Sem,Year)
+);
+CREATE TABLE Course_request (
+	Course_code	VARCHAR(7) NOT NULL,
+	Sem	TINYINT NOT NULL,
+	Year	SMALLINT NOT NULL,
+	Prof_id	INTEGER NOT NULL,
+	Roll_no	INTEGER NOT NULL,
+	Status	TEXT NOT NULL,
+	Type_Taken TEXT NOT NULL,
+	FOREIGN KEY(Roll_no) REFERENCES Student(Roll_no),
+	FOREIGN KEY(Prof_id) REFERENCES Professor(Prof_id),
+	FOREIGN KEY(Course_code,Sem,Year) REFERENCES Course_offered(Course_code,Sem,Year),
+	PRIMARY KEY(Course_code,Sem,Year,Roll_no)
 );
 CREATE TABLE Course_Profs(
 	Course_code VARCHAR(7) NOT NULL,
