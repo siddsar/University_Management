@@ -71,7 +71,8 @@ $res = $mysqli->query($sql);
 $row = $res->fetch_assoc();
 $row = $row["Prof_id"];
 // print($row);
-$sql = "SELECT * FROM Course_request where Prof_id = $row and status = 'Pending'; ";
+$sql = "SELECT * FROM Course_request, Professor where Professor.Prof_id = $row and Course_request.Prof_id = Professor.Prof_id and Professor.Email_id = '$email'; ";
+
 $result = $mysqli->query($sql) ;
 ?>
 <div class='table100 ver3 m-b-110'>
